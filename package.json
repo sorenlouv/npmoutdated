@@ -1,6 +1,6 @@
 {
   "name": "npmoutdated",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Will show package.json with updated dependencies and devdependencies",
   "main": "index.js",
   "dependencies": {
