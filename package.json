@@ -4,12 +4,10 @@
   "description": "Will show package.json with updated dependencies and devdependencies",
   "main": "index.js",
   "dependencies": {
-    "bluebird": "^3.4.1",
-    "fs": "0.0.2",
-    "lodash": "^4.13.1",
-    "npm": "^3.10.2",
-    "npm-registry-client": "^7.1.2",
-    "sort-object": "^3.0.2"
+    "bluebird": "3.4.1",
+    "lodash": "4.13.1",
+    "npm-registry-client": "7.1.2",
+    "sort-object": "3.0.2"
   },
   "devDependencies": {},
   "scripts": {
