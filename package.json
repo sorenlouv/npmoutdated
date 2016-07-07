@@ -1,0 +1,37 @@
+{
+  "name": "npmoutdated",
+  "version": "0.0.1",
+  "description": "Will show package.json with updated dependencies and devdependencies",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "fs": "0.0.2",
+    "lodash": "^4.13.1",
+    "npm": "^3.10.2",
+    "npm-registry-client": "^7.1.2",
+    "sort-object": "^3.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sqren/npmoutdated.git"
+  },
+  "keywords": [
+    "npm",
+    "outdated",
+    "update",
+    "dependecies",
+    "devDependecies",
+    "deps",
+    "package.json"
+  ],
+  "author": "Søren Louv-Jansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sqren/npmoutdated/issues"
+  },
+  "homepage": "https://github.com/sqren/npmoutdated#readme"
+}
