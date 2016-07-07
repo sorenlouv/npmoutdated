@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Will show package.json with updated dependencies and devdependencies",
   "main": "index.js",
+  "bin": {
+    "npmoutdated": "index.js"
+  },
   "dependencies": {
     "bluebird": "3.4.1",
     "lodash": "4.13.1",
@@ -12,9 +15,6 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "npmoutdated": "./index"
   },
   "repository": {
     "type": "git",
