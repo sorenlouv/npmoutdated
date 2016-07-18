@@ -2,7 +2,11 @@
 
 var RegClient = require('npm-registry-client');
 var Promise = require('bluebird');
-var _ = require('lodash');
+var _ = {
+    map: require('lodash.map'),
+    last: require('lodash.last'),
+    fromPairs: require('lodash.frompairs')
+};
 var sortObj = require('sort-object');
 var fs = require('fs');
 var detectIndent = require('detect-indent');
