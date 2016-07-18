@@ -4,9 +4,14 @@ var RegClient = require('npm-registry-client');
 var Promise = require('bluebird');
 var _ = require('lodash');
 var sortObj = require('sort-object');
-var client = new RegClient();
 var fs = require('fs');
-var package = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', 'utf8'));
+var detectIndent = require('detect-indent');
+
+var client = new RegClient();
+var packageFilename = process.cwd() + '/package.json';
+var packageFile = fs.readFileSync(packageFilename, 'utf8');
+var package = JSON.parse(packageFile);
+
 
 function getLatestVersion(name) {
     return new Promise(function(resolve, reject) {
@@ -30,12 +35,34 @@ function getUpdatedDependencies(deps) {
         return sortObj(_.fromPairs(dependencies));
     });
 }
+
+function shouldReplace() {
+    return _.last(process.argv) === '--replace';
+}
+
+function replaceFile(fileContents) {
+    fs.writeFile(packageFilename, fileContents, 'utf8', function(err) {
+        if (!err) {
+            console.log(packageFilename, 'was updated with shiny dependencies');
+        } else {
+            console.error(err);
+        }
+    });
+}
+
 Promise.all([
     getUpdatedDependencies(package.dependencies),
     getUpdatedDependencies(package.devDependencies)
 ]).spread(function(dependencies, devDependencies) {
     package.dependencies = dependencies;
     package.devDependencies = devDependencies;
-    console.log('Updated package.json:');
-    console.log(JSON.stringify(package, null, 4), '\n');
+    console.log('\n');
+    var indent = detectIndent(packageFile).indent || 4;
+    var fileContents = JSON.stringify(package, null, indent) + '\n';
+
+    if (shouldReplace()){
+        replaceFile(fileContents);
+    } else {
+        console.log(fileContents);
+    }
 });
