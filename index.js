@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-var RegClient = require('npm-registry-client');
 var Promise = require('bluebird');
+var needle = require('needle');
 var _ = {
     map: require('lodash.map'),
     last: require('lodash.last'),
-    fromPairs: require('lodash.frompairs')
+    fromPairs: require('lodash.frompairs'),
+    inRange: require('lodash.inRange')
 };
 var sortObj = require('sort-object');
 var fs = require('fs');
 var detectIndent = require('detect-indent');
 
-var client = new RegClient();
 var packageFilename = process.cwd() + '/package.json';
 var packageFile = fs.readFileSync(packageFilename, 'utf8');
 var package = JSON.parse(packageFile);
@@ -19,12 +19,9 @@ var package = JSON.parse(packageFile);
 
 function getLatestVersion(name) {
     return new Promise(function(resolve, reject) {
-    	var options = {};
-        client.get('https://registry.npmjs.org/' + name, options, function(error, data, raw, res) {
-            if (error) {
-                return reject(error);
-            }
-            resolve(data['dist-tags'].latest);
+        needle.get('https://registry.npmjs.org/' + name, function(error, res) {
+            var isSuccess = _.inRange(res.statusCode, 200, 399);
+            return isSuccess ? resolve(res.body['dist-tags'].latest) : reject(res);
         });
     });
 }
