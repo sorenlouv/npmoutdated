@@ -20,6 +20,10 @@ var package = JSON.parse(packageFile);
 function getLatestVersion(name) {
     return new Promise(function(resolve, reject) {
         needle.get('https://registry.npmjs.org/' + name, function(error, res) {
+            if (error) {
+                return reject(error);
+            }
+
             var isSuccess = _.inRange(res.statusCode, 200, 399);
             return isSuccess ? resolve(res.body['dist-tags'].latest) : reject(res);
         });
@@ -28,9 +32,14 @@ function getLatestVersion(name) {
 
 function getUpdatedDependencies(deps) {
     var promises = _.map(deps, function(currentVersion, name) {
-        return getLatestVersion(name).then(function(latestVersion) {
-            return [name, latestVersion];
-        });
+        return getLatestVersion(name)
+            .then(function(latestVersion) {
+                return [name, latestVersion];
+            })
+            .catch(function(e) {
+                console.error(e.statusCode, e.req.path);
+                return [name, currentVersion];
+            })
     });
     return Promise.all(promises).then(function(dependencies) {
         return sortObj(_.fromPairs(dependencies));
